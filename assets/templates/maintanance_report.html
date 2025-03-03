@@ -1,0 +1,22 @@
+<!-- maintenance_report.html -->
+<h2>Maintenance Report</h2>
+<table>
+    <tr>
+        <th>Asset</th>
+        <th>Condition</th>
+        <th>Maintenance Date</th>
+        <th>Details</th>
+        <th>Status</th>
+    </tr>
+    {% for asset in assets %}
+    <tr>
+        <td>{{ asset.name }}</td>
+        <td>{{ asset.condition }}</td>
+        <td>
+            {% for log in asset.maintenance_logs.all %}
+                <p>{{ log.date }}: {{ log.details }} (Status: {{ log.status }})</p>
+            {% endfor %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>

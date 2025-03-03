@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Assets - {{ role }}</title>
+</head>
+<body>
+
+    <form method="GET" action="{% url 'asset_list' %}">
+        <input type="text" name="search" value="{{ search_query }}" placeholder="Search assets...">
+        <button type="submit">Search</button>
+    </form>
+    
+    <h1>Asset List - {{ role }}</h1>
+    
+    <a href="{% url 'home' %}">Change Role</a>
+    
+    {% if role == "Manager" %}
+        <h2>Cost Summary</h2>
+        <table border="1">
+            <tr><th>Category</th><th>Total Cost</th></tr>
+            {% for item in assets %}
+                <tr>
+                    <td>{{ item.category }}</td>
+                    <td>${{ item.total_cost }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    
+    {% elif role == "Supervisor" %}
+        <h2>All Assets</h2>
+        <table border="1">
+            <tr><th>ID</th><th>Name</th><th>Category</th><th>Condition</th></tr>
+            {% for asset in assets %}
+                <tr>
+                    <td>{{ asset.id }}</td>
+                    <td>{{ asset.name }}</td>
+                    <td>{{ asset.category }}</td>
+                    <td>{{ asset.condition }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    {% else %}
+        <h2>Worker View - Limited Assets</h2>
+        <table border="1">
+            <tr><th>ID</th><th>Name</th><th>Category</th><th>Condition</th></tr>
+            {% for asset in assets %}
+                <tr>
+                    <td>{{ asset.id }}</td>
+                    <td>{{ asset.name }}</td>
+                    <td>{{ asset.category }}</td>
+                    <td>{{ asset.condition }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+</body>
+</html>

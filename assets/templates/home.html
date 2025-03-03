@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>City Asset Management</title>
+</head>
+<body>
+    <h1>Welcome to City Asset Management</h1>
+    <form action="{% url 'asset_list' %}" method="get">
+        <label for="role">Select Role:</label>
+        <select name="role" id="role">
+            <option value="Worker">Worker</option>
+            <option value="Supervisor">Supervisor</option>
+            <option value="Manager">Manager</option>
+        </select>
+        <button type="submit">View Assets</button>
+    </form>
+</body>
+</html>
