@@ -1,0 +1,7 @@
+<!-- add_asset.html -->
+<h2>Add New Asset</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}  <!-- Renders the form fields -->
+    <button type="submit">Add Asset</button>
+</form>

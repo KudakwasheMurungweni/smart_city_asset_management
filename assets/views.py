@@ -1,10 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Asset, MaintenanceLog
 from django.db.models import Sum
 import datetime
 from django.db.models import Q
 import plotly.graph_objects as go
-
+from .forms import AssetForm
 
 
 
@@ -64,3 +64,15 @@ def cost_report(request):
     chart = fig.to_html(full_html=False)
 
     return render(request, '../templates/cost_report.html', {'report': report, 'chart': chart})
+
+
+def add_asset(request):
+    if request.method == 'POST':
+        form = AssetForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('asset_list')  # Redirect to asset list page after saving the asset
+    else:
+        form = AssetForm()
+
+    return render(request, 'assets/add_asset.html', {'form': form})

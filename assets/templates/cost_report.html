@@ -1,0 +1,21 @@
+<!-- cost_report.html -->
+<h2>Cost Report</h2>
+
+<!-- Display the cost summary table -->
+<table>
+    <tr>
+        <th>Category</th>
+        <th>Total Cost</th>
+    </tr>
+    {% for entry in report %}
+    <tr>
+        <td>{{ entry.category }}</td>
+        <td>{{ entry.total_cost }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<!-- Embed the Plotly chart -->
+<div>
+    {{ chart|safe }}
+</div>
