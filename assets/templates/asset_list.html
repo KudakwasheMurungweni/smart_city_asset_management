@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+
 {% block title %}Assets - {{ role }} | CityAssets{% endblock %}
 
 {% block content %}
@@ -48,8 +49,27 @@
     <!-- Content Sections -->
     <div class="space-y-8">
         {% if role == "Manager" %}
-            {% include 'reports/cost_report.html' %}
-        {% else %}
+            <div class="border-t border-gray-100 pt-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900">Reports</h3>
+                </div>
+
+                <!-- Cost Report -->
+                <div class="mb-6">
+                    <h4 class="text-xl font-semibold text-gray-900">Cost Report</h4>
+                    {% include 'templates/cost_report.html' %}
+                </div>
+
+                <!-- Maintenance Report -->
+                <div>
+                    <h4 class="text-xl font-semibold text-gray-900">Maintenance Report</h4>
+                    {% include 'templates/maintenance_report.html' %}
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Asset List Section -->
+        {% if role == "Manager" or role == "Supervisor" %}
             <div class="border-t border-gray-100 pt-8">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-lg font-semibold text-gray-900">
@@ -60,26 +80,26 @@
                         {% endif %}
                     </h3>
                     {% if role == "Manager" %}
-                    <a href="{% url 'add_asset' %}" 
-                       class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-                        </svg>
-                        New Asset
-                    </a>
+                        <a href="{% url 'add_asset' %}" 
+                           class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                            </svg>
+                            New Asset
+                        </a>
                     {% endif %}
                 </div>
-                
+
                 <div class="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
-                    <!-- Loop through the assets directly here -->
+                    <!-- Loop through the assets -->
                     {% for asset in assets %}
-                    <div class="asset-item">
-                        <h4>{{ asset.name }}</h4>
-                        <p>{{ asset.description }}</p>
-                        <!-- Add other asset details here -->
-                    </div>
+                        <div class="asset-item">
+                            <h4>{{ asset.name }}</h4>
+                            <p>{{ asset.description }}</p>
+                            <!-- Add other asset details here -->
+                        </div>
                     {% empty %}
-                    <p>No assets available.</p>
+                        <p>No assets available.</p>
                     {% endfor %}
                 </div>
             </div>
