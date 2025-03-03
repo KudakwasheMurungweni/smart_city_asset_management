@@ -75,4 +75,4 @@ def add_asset(request):
     else:
         form = AssetForm()
 
-    return render(request, 'assets/add_asset.html', {'form': form})
+    return render(request, '../templates/add_asset.html', {'form': form})
