@@ -1,21 +1,32 @@
-<!-- cost_report.html -->
-<h2>Cost Report</h2>
+<div class="space-y-8">
+    <!-- Cost Summary Section -->
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold mb-4">Cost Summary</h2>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Category</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Total Cost</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for item in assets %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ item.category }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${{ item.total_cost|floatformat:2 }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-<!-- Display the cost summary table -->
-<table>
-    <tr>
-        <th>Category</th>
-        <th>Total Cost</th>
-    </tr>
-    {% for entry in report %}
-    <tr>
-        <td>{{ entry.category }}</td>
-        <td>{{ entry.total_cost }}</td>
-    </tr>
-    {% endfor %}
-</table>
-
-<!-- Embed the Plotly chart -->
-<div>
-    {{ chart|safe }}
+    <!-- Cost Distribution Section -->
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold mb-4">Cost Distribution</h2>
+        <div class="w-full h-96">
+            {{ chart|safe }}
+        </div>
+    </div>
 </div>

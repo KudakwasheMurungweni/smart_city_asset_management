@@ -1,22 +1,23 @@
-<!-- maintenance_report.html -->
-<h2>Maintenance Report</h2>
-<table>
-    <tr>
-        <th>Asset</th>
-        <th>Condition</th>
-        <th>Maintenance Date</th>
-        <th>Details</th>
-        <th>Status</th>
-    </tr>
-    {% for asset in assets %}
-    <tr>
-        <td>{{ asset.name }}</td>
-        <td>{{ asset.condition }}</td>
-        <td>
-            {% for log in asset.maintenance_logs.all %}
-                <p>{{ log.date }}: {{ log.details }} (Status: {{ log.status }})</p>
-            {% endfor %}
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+<div class="bg-white rounded-lg shadow-md p-6">
+    <h2 class="text-2xl font-bold mb-6">Maintenance Report</h2>
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Asset</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Condition</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Maintenance Date</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Details</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Status</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                {% for asset in assets %}
+                {% for log in asset.maintenance_logs.all %}
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap">{{ asset.name }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 py-1 text-sm rounded-full 
+                                  {% if asset.condition == 'Good' %}bg-green-100 text-green-800
+                                  {% elif asset.condition == 'Fair' %}bg-yellow-100 text-yellow-800
+         
