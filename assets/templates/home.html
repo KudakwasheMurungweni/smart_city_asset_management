@@ -1,18 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>City Asset Management</title>
-</head>
-<body>
-    <h1>Welcome to City Asset Management</h1>
-    <form action="{% url 'asset_list' %}" method="get">
-        <label for="role">Select Role:</label>
-        <select name="role" id="role">
-            <option value="Worker">Worker</option>
-            <option value="Supervisor">Supervisor</option>
-            <option value="Manager">Manager</option>
-        </select>
-        <button type="submit">View Assets</button>
+<!-- home.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-8 mt-12">
+    <h1 class="text-4xl font-bold text-gray-800 mb-8 text-center">
+        Welcome to Smart City Asset Management
+    </h1>
+    
+    <form action="{% url 'asset_list' %}" method="get" class="space-y-6">
+        <div class="flex flex-col space-y-4">
+            <label for="role" class="text-lg font-medium text-gray-700">Select Role:</label>
+            <select name="role" id="role" 
+                class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <option value="Worker">Worker</option>
+                <option value="Supervisor">Supervisor</option>
+                <option value="Manager">Manager</option>
+            </select>
+        </div>
+        
+        <button type="submit" 
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
+            View Assets
+        </button>
     </form>
-</body>
-</html>
+</div>
+{% endblock %}
