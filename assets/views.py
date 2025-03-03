@@ -3,7 +3,8 @@ from .models import Asset, MaintenanceLog
 from django.db.models import Sum
 import datetime
 from django.db.models import Q
- 
+import plotly.graph_objects as go
+
 
 
 
@@ -43,4 +44,23 @@ def maintenance_report(request):
 def cost_report(request):
     # Group assets by category and summarize total cost
     report = Asset.objects.values('category').annotate(total_cost=Sum('cost'))
-    return render(request, '../templates/cost_report.html', {'report': report})
+
+    # Create a Plotly bar chart
+    categories = [entry['category'] for entry in report]
+    costs = [entry['total_cost'] for entry in report]
+
+    # Create the chart
+    fig = go.Figure(data=[go.Bar(x=categories, y=costs)])
+
+    # Update layout for the chart
+    fig.update_layout(
+        title='Total Asset Cost by Category',
+        xaxis_title='Asset Category',
+        yaxis_title='Total Cost',
+        template='plotly_dark'
+    )
+
+    # Get the HTML representation of the plot
+    chart = fig.to_html(full_html=False)
+
+    return render(request, '../templates/cost_report.html', {'report': report, 'chart': chart})
