@@ -1,26 +1,86 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-8 mt-12">
-    <h1 class="text-4xl font-bold text-gray-800 mb-8 text-center">
-        Welcome to Smart City Asset Management
-    </h1>
-    
-    <form action="{% url 'asset_list' %}" method="get" class="space-y-6">
-        <div class="flex flex-col space-y-4">
-            <label for="role" class="text-lg font-medium text-gray-700">Select Role:</label>
-            <select name="role" id="role" 
-                class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                <option value="Worker">Worker</option>
-                <option value="Supervisor">Supervisor</option>
-                <option value="Manager">Manager</option>
-            </select>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto transform transition-all duration-300 hover:scale-[1.005]">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 sm:p-12 space-y-10 relative overflow-hidden">
+            <!-- Decorative elements -->
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-400 to-purple-500"></div>
+            <div class="absolute -top-20 -right-20 w-48 h-48 bg-purple-100 rounded-full opacity-50"></div>
+            <div class="absolute -bottom-20 -left-20 w-48 h-48 bg-blue-100 rounded-full opacity-50"></div>
+
+            <!-- Header Section -->
+            <div class="text-center space-y-4 relative z-10">
+                <h1 class="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    Smart City Asset Management
+                </h1>
+                <p class="text-lg text-gray-600 mt-2 max-w-xl mx-auto">
+                    Optimizing urban infrastructure through intelligent asset tracking and management
+                </p>
+            </div>
+
+            <!-- Role Selection Form -->
+            <form action="{% url 'asset_list' %}" method="get" class="space-y-8 relative z-10">
+                <div class="group relative">
+                    <label for="role" class="block text-lg font-semibold text-gray-700 mb-4 ml-1">
+                        Select Your Role
+                        <span class="text-blue-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <select 
+                            name="role" 
+                            id="role"
+                            class="w-full appearance-none bg-white pl-12 pr-4 py-4 text-lg border-2 border-gray-200 rounded-xl 
+                                   focus:border-blue-500 focus:ring-4 focus:ring-blue-100 
+                                   transition-all duration-200 cursor-pointer
+                                   hover:border-blue-300"
+                        >
+                            <option value="Worker" class="flex items-center gap-2">
+                                👷 Worker
+                            </option>
+                            <option value="Supervisor" class="flex items-center gap-2">
+                                👔 Supervisor
+                            </option>
+                            <option value="Manager" class="flex items-center gap-2">
+                                💼 Manager
+                            </option>
+                        </select>
+                        <div class="absolute left-4 top-1/2 -translate-y-1/2 text-2xl">
+                            👥
+                        </div>
+                        <div class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                            ▼
+                        </div>
+                    </div>
+                </div>
+
+                <button 
+                    type="submit"
+                    class="w-full flex items-center justify-center space-x-3 bg-gradient-to-r from-blue-500 to-purple-600 
+                           hover:from-blue-600 hover:to-purple-700 text-white font-semibold py-5 px-8 
+                           rounded-xl transition-all duration-300 transform hover:scale-[1.02]
+                           shadow-lg hover:shadow-xl"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                    </svg>
+                    <span>Access Dashboard</span>
+                </button>
+            </form>
+
+            <!-- Additional Visual Elements -->
+            <div class="relative z-10 text-center space-y-2">
+                <p class="text-gray-500 text-sm">
+                    Powered by SmartCityOS v2.0
+                </p>
+                <div class="flex justify-center space-x-4 text-blue-500">
+                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">🏙️</div>
+                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">🌉</div>
+                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">🚦</div>
+                </div>
+            </div>
         </div>
-        
-        <button type="submit" 
-            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
-            View Assets
-        </button>
-    </form>
+    </div>
 </div>
 {% endblock %}
