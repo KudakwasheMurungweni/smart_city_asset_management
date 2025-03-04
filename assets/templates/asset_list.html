@@ -1,109 +1,198 @@
 {% extends 'base.html' %}
-
+{% load humanize %} 
 {% block title %}Assets - {{ role }} | CityAssets{% endblock %}
 
 {% block content %}
-<div class="bg-white rounded-xl shadow-lg p-8">
-    <!-- Header Section -->
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-        <div class="space-y-2">
-            <h1 class="text-2xl font-bold text-gray-900">
-                Asset Management Dashboard
-                <span class="text-blue-600">• {{ role }} View</span>
-            </h1>
-            {% if role == "Manager" %}
-            <p class="text-sm text-gray-500">
-                Full system access | Financial overview enabled
-            </p>
-            {% endif %}
-        </div>
-        <a href="{% url 'home' %}" 
-           class="flex items-center gap-2 bg-white border border-blue-600 text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg transition-all duration-200">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2H4a1 1 0 110-2V4zm3 1h2v2H7V5zm0 4h2v2H7V9zm0 4h2v2H7v-2zm6-8h2v2h-2V5zm0 4h2v2h-2V9zm0 4h2v2h-2v-2z" clip-rule="evenodd" />
-            </svg>
-            Change Role
-        </a>
-    </div>
-
-    <!-- Search Bar -->
-    <form method="GET" class="mb-10">
-        <div class="relative">
-            <input type="text" 
-                   name="search" 
-                   value="{{ search_query }}" 
-                   class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                   placeholder="Search assets by name, category, or ID...">
-            <div class="absolute inset-y-0 left-0 flex items-center pl-4">
-                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
-            </div>
-            <button type="submit" 
-                    class="absolute inset-y-0 right-0 flex items-center px-6 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-r-xl transition-colors duration-200">
-                Search
-            </button>
-        </div>
-    </form>
-
-    <!-- Content Sections -->
-    <div class="space-y-8">
-        {% if role == "Manager" %}
-            <div class="border-t border-gray-100 pt-8">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-lg font-semibold text-gray-900">Reports</h3>
-                </div>
-
-                <!-- Cost Report -->
-                <div class="mb-6">
-                    <h4 class="text-xl font-semibold text-gray-900">Cost Report</h4>
-                    {% include 'cost_report.html' %}
-                </div>
-
-                <!-- Maintenance Report -->
-                <div>
-                    <h4 class="text-xl font-semibold text-gray-900">Maintenance Report</h4>
-                    {% include 'maintenance_report.html' %}
-                </div>
-            </div>
-        {% endif %}
-
-        <!-- Asset List Section -->
-        {% if role == "Manager" or role == "Supervisor" %}
-            <div class="border-t border-gray-100 pt-8">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-lg font-semibold text-gray-900">
-                        {% if role == "Supervisor" %}
-                            All Registered Assets
-                        {% else %}
-                            Your Assigned Assets
-                        {% endif %}
-                    </h3>
+<div class="min-h-screen bg-gray-50 p-8">
+    <div class="max-w-7xl mx-auto bg-white rounded-2xl shadow-xl p-8 sm:p-12">
+        <!-- Header Section -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4 relative">
+            <div class="space-y-3">
+                <h1 class="text-3xl font-bold text-gray-900 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    Asset Dashboard
+                </h1>
+                <div class="flex items-center gap-3">
+                    <span class="inline-block px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-sm font-medium">
+                        {{ role }} View
+                    </span>
                     {% if role == "Manager" %}
-                        <a href="{% url 'add_asset' %}" 
-                           class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-                            </svg>
-                            New Asset
-                        </a>
+                    <div class="flex items-center gap-1 text-green-600">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="text-sm">Financial Access Enabled</span>
+                    </div>
                     {% endif %}
                 </div>
+            </div>
+            <a href="{% url 'home' %}" 
+               class="flex items-center gap-2 bg-white border-2 border-blue-600 text-blue-600 hover:bg-blue-50 px-5 py-2.5 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"/>
+                    <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"/>
+                </svg>
+                Switch Role
+            </a>
+            <div class="absolute -top-6 right-0 w-24 h-24 bg-purple-100 rounded-full opacity-20"></div>
+        </div>
 
-                <div class="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
-                    <!-- Loop through the assets -->
-                    {% for asset in assets %}
-                        <div class="asset-item">
-                            <h4>{{ asset.name }}</h4>
-                            <p>{{ asset.description }}</p>
-                            <!-- Add other asset details here -->
-                        </div>
-                    {% empty %}
-                        <p>No assets available.</p>
-                    {% endfor %}
+        <!-- Search Bar -->
+        <form method="GET" class="mb-12">
+            <div class="relative group">
+                <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl opacity-20 group-focus-within:opacity-30 transition-opacity"></div>
+                <div class="relative flex items-center">
+                    <input type="text" 
+                           name="search" 
+                           value="{{ search_query }}" 
+                           class="w-full pl-14 pr-28 py-4 text-lg border-2 border-gray-200 rounded-2xl bg-white
+                                  focus:border-blue-500 focus:ring-4 focus:ring-blue-100 
+                                  transition-all duration-200 placeholder-gray-400"
+                           placeholder="Search assets...">
+                    <div class="absolute left-4 text-gray-400">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                    <button type="submit" 
+                            class="absolute right-2 top-2 bottom-2 px-6 bg-gradient-to-r from-blue-500 to-purple-600 
+                                   hover:from-blue-600 hover:to-purple-700 text-white font-medium 
+                                   rounded-xl transition-all duration-200 flex items-center gap-2">
+                        Search
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </button>
                 </div>
             </div>
-        {% endif %}
+        </form>
+
+        <!-- Content Sections -->
+        <div class="space-y-12">
+            {% if role == "Manager" %}
+                <!-- Reports Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Cost Report Card -->
+                    <div class="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-2xl border border-blue-100">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-900">Cost Analysis</h3>
+                            <div class="p-3 bg-blue-100 rounded-lg">
+                                💰
+                            </div>
+                        </div>
+                        {% include 'cost_report.html' %}
+                    </div>
+
+                    <!-- Maintenance Report Card -->
+                    <div class="bg-gradient-to-br from-green-50 to-blue-50 p-6 rounded-2xl border border-green-100">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-900">Maintenance Overview</h3>
+                            <div class="p-3 bg-green-100 rounded-lg">
+                                🛠️
+                            </div>
+                        </div>
+                        {% include 'maintenance_report.html' %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Asset List Section -->
+            {% if role == "Manager" or role == "Supervisor" %}
+                <div class="border-t border-gray-100 pt-10">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+                        <h3 class="text-2xl font-semibold text-gray-900">
+                            {% if role == "Supervisor" %}
+                                Managed Assets
+                            {% else %}
+                                Total Inventory
+                            {% endif %}
+                        </h3>
+                        {% if role == "Manager" %}
+                            <a href="{% url 'add_asset' %}" 
+                               class="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 
+                                      hover:from-blue-600 hover:to-purple-700 text-white px-6 py-3 
+                                      rounded-xl transition-all duration-200 shadow-sm hover:shadow-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+                                </svg>
+                                Add New Asset
+                            </a>
+                        {% endif %}
+                    </div>
+
+                    <!-- Asset Table -->
+                    <div class="overflow-x-auto rounded-2xl border border-gray-200 shadow-sm">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Asset</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Category</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Location</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Status</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Value</th>
+                                    {% if role == "Manager" %}<th class="px-6 py-4 text-right">Actions</th>{% endif %}
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                {% for asset in assets %}
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="p-2 bg-blue-100 rounded-lg">
+                                                {% if asset.category == "Infrastructure" %}🏗️
+                                                {% elif asset.category == "Equipment" %}🚜
+                                                {% else %}💡{% endif %}
+                                            </div>
+                                            <div>
+                                                <div class="font-medium text-gray-900">{{ asset.name }}</div>
+                                                <div class="text-sm text-gray-500">{{ asset.purchase_date|date:"M Y" }}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-block px-2.5 py-1 rounded-full text-sm 
+                                            {% if asset.category == "Infrastructure" %}bg-purple-100 text-purple-800
+                                            {% elif asset.category == "Equipment" %}bg-orange-100 text-orange-800
+                                            {% else %}bg-blue-100 text-blue-800{% endif %}">
+                                            {{ asset.category }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-gray-600">{{ asset.location }}</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-2">
+                                            <div class="h-2.5 w-2.5 rounded-full 
+                                                {% if asset.condition == 'Good' %}bg-green-500
+                                                {% elif asset.condition == 'Fair' %}bg-yellow-500
+                                                {% else %}bg-red-500{% endif %}"></div>
+                                            {{ asset.condition }}
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 font-medium">${{ asset.cost|floatformat:"0" }}</td>
+                                    {% if role == "Manager" %}
+                                    <td class="px-6 py-4 text-right">
+                                        <div class="flex justify-end gap-2">
+                                            <a href="#" class="p-2 hover:bg-gray-100 rounded-lg">
+                                                ✏️
+                                            </a>
+                                            <a href="#" class="p-2 hover:bg-gray-100 rounded-lg">
+                                                📊
+                                            </a>
+                                        </div>
+                                    </td>
+                                    {% endif %}
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="6" class="px-6 py-8 text-center text-gray-500">
+                                        No assets found matching your criteria
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endblock %}
